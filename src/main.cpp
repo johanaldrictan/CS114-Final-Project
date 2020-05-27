@@ -1,6 +1,3 @@
-
-
-
 #include <glad/glad.h>
 #include <SDL/SDL.h>
 #include <glm/glm.hpp>
@@ -136,12 +133,11 @@ int main()
 		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
 		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
-	/*
+	
 	unsigned int indices[] = {  // note that we start from 0!
 	0, 1, 3,   // first triangle
 	1, 2, 3    // second triangle
 	};
-	*/
 	
 	//Initialization
 	unsigned int VAO, VBO;

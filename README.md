@@ -1,2 +1,2 @@
-# SDLOpenGLExperiments
-Repository for experiments in OpenGL and SDL, this is mainly for educational purposes
+# CS 114 Final Project
+2D Particle and Lighting Simulation
