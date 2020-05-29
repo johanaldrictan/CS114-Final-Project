@@ -48,90 +48,16 @@ int main()
 	{
 		printf("Failed to load GLAD!");
 	}
-	/*
-	
-	Triangle
 
-	shader shader;
-	CreateShader(&shader, "vshader.vs", "fshader.fs");
-
-	float vertices[] = {
-		// positions         // colors
-		0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-		0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-	};
-
-	unsigned int VBO, VAO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindVertexArray(0);
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	
-	
-
-	*/
 	glEnable(GL_DEPTH_TEST);
 
 	Shader shader = Shader("vshader.vs", "fshader.fs");
 	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		// positions          // colors           // texture coords
+		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
 	};
 	
 	unsigned int indices[] = {  // note that we start from 0!
@@ -140,19 +66,27 @@ int main()
 	};
 	
 	//Initialization
-	unsigned int VAO, VBO;
+	unsigned int VAO, VBO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
 	// 1. bind Vertex Array Object
 	glBindVertexArray(VAO);
 	// 2. copy our vertices array in a vertex buffer for OpenGL to use
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	
 	// 4. then set the vertex attributes pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	// color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	// texture coord attribute
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 	unsigned int texture1, texture2;
 	// texture 1
 	// ---------
@@ -277,56 +211,8 @@ int main()
 			graphicY -= .1f;
 		}
 		glUseProgram(shader.ID);
-
-		// create transformations
-		glm::mat4 transform;
-		glm::mat4 model;
-		model = glm::rotate(model, (float)SDL_GetTicks() / 1000 * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		// camera/view transformation
-		glm::mat4 view;
-		float radius = 10.0f;
-		float camX = sin((float)SDL_GetTicks() / 1000) * radius;
-		float camZ = cos((float)SDL_GetTicks() / 1000) * radius;
-		view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		
-		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / SCR_HEIGHT, 0.1f, 100.0f);
-		float freq = (float)SDL_GetTicks() / 500;
-
-		colorR = sinf(freq + 4);
-		colorG = sinf(freq + 2);
-		colorB = sinf(freq + 0);
-
-		//glm::vec3 color;
-		//color = { colorR, colorG,colorB };
-		// get matrix's uniform location and set matrix
-	//	unsigned int transformLoc = glGetUniformLocation(shader.ID, "transform");
-		unsigned int modelLoc = glGetUniformLocation(shader.ID, "model");
-		unsigned int viewLoc = glGetUniformLocation(shader.ID, "view");
-		unsigned int projectionLoc = glGetUniformLocation(shader.ID, "projection");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		
 		glBindVertexArray(VAO);
-		for (unsigned int i = 0; i < 10; i++)
-		{
-			glm::mat4 model;
-			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i;
-			//colorR = sinf(freq + 4 + i);
-			//colorG = sinf(freq + 2 + i);
-			//colorB = sinf(freq + 0 + i);
-			//color = { colorR, colorG,colorB };
-			transform = glm::translate(transform, glm::vec3(graphicX, graphicY, graphicZ));
-			transform = glm::rotate(transform, (float)SDL_GetTicks() / 1000, glm::vec3(0.0f, 0.0f, 1.0f));
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-			//glUniform3fv(colorLoc, 1, glm::value_ptr(color));
-			//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		SDL_GL_SwapWindow(window);
 		//Swap inputs for frame
 		SwapInputs(Input);
