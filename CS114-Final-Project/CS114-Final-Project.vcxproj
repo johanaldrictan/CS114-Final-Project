@@ -124,6 +124,8 @@
     <Image Include="..\src\container.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\shaders\sprite.fs" />
+    <None Include="..\shaders\sprite.vs" />
     <None Include="..\src\fshader.fs" />
     <None Include="..\src\vshader.vs" />
   </ItemGroup>
@@ -131,15 +133,21 @@
     <ClCompile Include="..\src\glad.c" />
     <ClCompile Include="..\src\Input.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\ResourceManager.cpp" />
     <ClCompile Include="..\src\Shader.cpp" />
+    <ClCompile Include="..\src\SpriteRenderer.cpp" />
     <ClCompile Include="..\src\stb_image.cpp" />
+    <ClCompile Include="..\src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\ResourceManager.h" />
     <ClInclude Include="..\include\Input.h" />
     <ClInclude Include="..\include\Math.h" />
     <ClInclude Include="..\include\MR_EngineTypeDefs.h" />
     <ClInclude Include="..\include\Shader.h" />
+    <ClInclude Include="..\include\SpriteRenderer.h" />
     <ClInclude Include="..\include\stb_image.h" />
+    <ClInclude Include="..\include\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
