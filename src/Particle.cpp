@@ -10,20 +10,28 @@ void ParticleGenerator::Update(float dt, glm::vec2 center, unsigned int newParti
 {
 	for (unsigned int i = 0; i < newParticles; i++) {
 		int unusedParticle = this->firstUnusedParticle();
-		this->respawnParticle(this->particles[unusedParticle], center, offset);
+		if (unusedParticle == -1) {
+			break;
+		}
+		else {
+			this->respawnParticle(this->particles[unusedParticle], center, offset);
+		}
+		
 	}
 
 	for (unsigned int i = 0; i < this->amount; i++) {
 		Particle& p = this->particles[i];
-		p.Life -= dt;
+		
 		if (p.Life > 0.0f) {
+			p.Life -= dt;
 			p.Position -= p.Velocity * dt;
-			p.Color.a -= dt * 2.5f;
+			p.Color.a -= dt * 0.5f;
 		}
 	}
 }
 
-void ParticleGenerator::Draw() 
+
+void ParticleGenerator::Draw()
 {
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE); //additive blending
 	this->shader.use();
@@ -88,16 +96,17 @@ unsigned int ParticleGenerator::firstUnusedParticle()
 	}
 	// all particles are taken, override the first one (note that if it repeatedly hits this case, more particles should be reserved)
 	lastUsedParticle = 0;
-	return 0;
+	return -1;
 }
 
 void ParticleGenerator::respawnParticle(Particle& particle, glm::vec2 center, glm::vec2 offset)
 {
-	float random = ((rand() % 100) - 50) / 10.0f;
+	float randx = ((rand() % 100) + 10);
+	float randy = ((rand() % 100) + 10);
 	float rColor = 0.5f + ((rand() % 100) / 100.0f);
 	particle.Position = center;
 	//particle.Position = center + random + offset;
 	particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
-	particle.Life = 10.0f;
-	particle.Velocity = glm::vec2(0.0f, 1000.0f) * 0.1f;
+	particle.Life = 5.0f;
+	particle.Velocity = glm::vec2(randx, randy);
 }

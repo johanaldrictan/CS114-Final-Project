@@ -93,13 +93,13 @@ int main()
 			}
 
 		}
-		Particles->Update(deltaTime, glm::vec2(150.0f, 500.0f), 4);
+		Particles->Update(deltaTime, glm::vec2(150.0f, 500.0f), 5);
 
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		//Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f), glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f), glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 		Particles->Draw();
 		//Renderer->drawSprite(ResourceManager::getTexture("face"), glm::vec2(200.0f, 200.0f), glm::vec2(300.0f, 400.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		SDL_GL_SwapWindow(window);
