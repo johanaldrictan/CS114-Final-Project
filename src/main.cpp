@@ -70,17 +70,20 @@ int main()
 	Uint64 last = 0;
 	double deltaTime = 0;
 
+
 	bool Running = true;
 	SDL_Event Event;
 
 	while (Running)
 	{
+		Uint32 currentTime = SDL_GetTicks();
+
 		SDL_PumpEvents();
 		// calculate delta time
 		// --------------------
 		last = current;
 		current = SDL_GetPerformanceCounter();
-
+		
 		deltaTime = (double)((current - last) * 1000 / (double)SDL_GetPerformanceFrequency());
 		//convert to seconds
 		deltaTime = deltaTime * 0.001;
@@ -99,7 +102,7 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f), glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f),currentTime, glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 		Particles->Draw();
 		//Renderer->drawSprite(ResourceManager::getTexture("face"), glm::vec2(200.0f, 200.0f), glm::vec2(300.0f, 400.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		SDL_GL_SwapWindow(window);

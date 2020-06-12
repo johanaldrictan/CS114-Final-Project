@@ -7,6 +7,7 @@ SpriteRenderer::SpriteRenderer(Shader& shader, int width, int height)
     this->spriteWidth = width;
     this->spriteHeight = height;
     this->initRenderData();
+    this->frame = 0.0;
 }
 
 SpriteRenderer::~SpriteRenderer()
@@ -14,7 +15,7 @@ SpriteRenderer::~SpriteRenderer()
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-void SpriteRenderer::drawSprite(Texture2D& texture, glm::vec2 position, glm::vec2 size, float rotate, glm::vec3 color)
+void SpriteRenderer::drawSprite(Texture2D& texture, glm::vec2 position, Uint32 currentTime, glm::vec2 size, float rotate, glm::vec3 color)
 {
     // prepare transformations
     this->shader.use();
@@ -32,24 +33,23 @@ void SpriteRenderer::drawSprite(Texture2D& texture, glm::vec2 position, glm::vec
 
     model = glm::scale(model, glm::vec3(size, 1.0f)); // last scale
 
-    int frameIndex = 1;
-    const float tw = float(spriteWidth) / texture.Width;
-    const float th = float(spriteHeight) / texture.Height;
-    const int numPerRow = texture.Width / spriteWidth;
-    const float tx = (frameIndex % numPerRow) * tw;
-    const float ty = (frameIndex / numPerRow + 1) * th;
-    const float texVerts[] = {
-        tx, ty,
-        tx + tw, ty,
-        tx + tw, ty + th,
-        tx, ty + th
-    };
-
+    float dT = (currentTime - this->lastUpdate) / 1000.0f;
+    int framesToUpdate = floor(dT / (1.0f / animatedFPS));
+    if (framesToUpdate > 0) {
+        frame += framesToUpdate;
+        frame = (int)frame%(texture.Width / spriteWidth);
+        this->lastUpdate = currentTime;
+        
+    }
     this->shader.setMatrix4("model", model);
+    this->shader.setFloat("frame", frame);
+    /*if (frame == texture.Width / spriteWidth - 1) {
+        frame = 0.0;
+    }
+    frame++;*/
 
     // render textured quad
     this->shader.setVector3f("spriteColor", color);
-
     glActiveTexture(GL_TEXTURE0);
     texture.bind();
 
