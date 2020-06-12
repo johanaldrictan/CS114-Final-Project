@@ -1,9 +1,11 @@
 #include "../include/SpriteRenderer.h"
 
 
-SpriteRenderer::SpriteRenderer(Shader& shader)
+SpriteRenderer::SpriteRenderer(Shader& shader, int width, int height)
 {
     this->shader = shader;
+    this->spriteWidth = width;
+    this->spriteHeight = height;
     this->initRenderData();
 }
 
@@ -29,6 +31,19 @@ void SpriteRenderer::drawSprite(Texture2D& texture, glm::vec2 position, glm::vec
     model = glm::translate(model, glm::vec3(-0.5f * size.x, -0.5f * size.y, 0.0f)); // move origin back
 
     model = glm::scale(model, glm::vec3(size, 1.0f)); // last scale
+
+    int frameIndex = 1;
+    const float tw = float(spriteWidth) / texture.Width;
+    const float th = float(spriteHeight) / texture.Height;
+    const int numPerRow = texture.Width / spriteWidth;
+    const float tx = (frameIndex % numPerRow) * tw;
+    const float ty = (frameIndex / numPerRow + 1) * th;
+    const float texVerts[] = {
+        tx, ty,
+        tx + tw, ty,
+        tx + tw, ty + th,
+        tx, ty + th
+    };
 
     this->shader.setMatrix4("model", model);
 

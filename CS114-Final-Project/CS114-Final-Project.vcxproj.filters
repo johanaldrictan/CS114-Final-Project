@@ -35,6 +35,12 @@
     <None Include="..\shaders\sprite.vs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\shaders\particle.fs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\shaders\particle.vs">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -49,9 +55,6 @@
     <ClCompile Include="..\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,18 +64,12 @@
     <ClCompile Include="..\src\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\MR_EngineTypeDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Shader.h">
@@ -85,6 +82,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\SpriteRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

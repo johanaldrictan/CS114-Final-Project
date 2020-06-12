@@ -12,7 +12,8 @@
 class SpriteRenderer
 {
 public:
-    SpriteRenderer(Shader& shader);
+    int spriteWidth, spriteHeight;
+    SpriteRenderer(Shader& shader, int width, int height);
     ~SpriteRenderer();
 
     void drawSprite(Texture2D& texture, glm::vec2 position,
