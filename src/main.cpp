@@ -61,32 +61,26 @@ int main()
 	ResourceManager::loadTexture("smoke.png", true, "particle");
 	//ResourceManager::loadTexture("container.png", true, "box");
 	//ResourceManager::loadTexture("awesomeface.png", true, "face");
-	Particles = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 20);
+	Particles = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 100000, 256, 256);
 	ResourceManager::getShader("particle").use().setMatrix4("projection", projection);
 
 	// deltaTime variables
 	// -------------------
-	Uint64 current = SDL_GetPerformanceCounter();
-	Uint64 last = 0;
-	double deltaTime = 0;
-
+	Uint32 lastUpdate = SDL_GetTicks();
 
 	bool Running = true;
 	SDL_Event Event;
 
 	while (Running)
 	{
-		Uint32 currentTime = SDL_GetTicks();
 
 		SDL_PumpEvents();
-		// calculate delta time
+		// calculate delta time for physics
 		// --------------------
-		last = current;
-		current = SDL_GetPerformanceCounter();
-		
-		deltaTime = (double)((current - last) * 1000 / (double)SDL_GetPerformanceFrequency());
-		//convert to seconds
-		deltaTime = deltaTime * 0.001;
+		Uint32 currentTime = SDL_GetTicks();
+
+
+		float dT = (currentTime - lastUpdate) / 1000.0f;
 
 		while (SDL_PollEvent(&Event) != 0)
 		{
@@ -96,15 +90,14 @@ int main()
 			}
 
 		}
-		Particles->Update(deltaTime, glm::vec2(150.0f, 500.0f), 5);
+		Particles->Update(dT, glm::vec2(150.0f, 500.0f), 100);
 
-
+		lastUpdate = currentTime;
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f),currentTime, glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-		Particles->Draw();
-		//Renderer->drawSprite(ResourceManager::getTexture("face"), glm::vec2(200.0f, 200.0f), glm::vec2(300.0f, 400.0f), 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		Particles->Draw(currentTime);
 		SDL_GL_SwapWindow(window);
 	}
 	delete Renderer;

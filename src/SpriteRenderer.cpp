@@ -43,6 +43,7 @@ void SpriteRenderer::drawSprite(Texture2D& texture, glm::vec2 position, Uint32 c
     }
     this->shader.setMatrix4("model", model);
     this->shader.setFloat("frame", frame);
+    this->shader.setFloat("numFrames", (float)(texture.Width / spriteWidth));
     /*if (frame == texture.Width / spriteWidth - 1) {
         frame = 0.0;
     }

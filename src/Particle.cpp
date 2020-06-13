@@ -1,7 +1,7 @@
 #include "../include/Particle.h"
 
-ParticleGenerator::ParticleGenerator(Shader shader, Texture2D texture, unsigned int amount)
-	: shader(shader), texture(texture), amount(amount)
+ParticleGenerator::ParticleGenerator(Shader shader, Texture2D texture, unsigned int amount, int width, int height)
+	: shader(shader), texture(texture), amount(amount), spriteWidth(width), spriteHeight(height)
 {
 	this->init();
 }
@@ -31,7 +31,7 @@ void ParticleGenerator::Update(float dt, glm::vec2 center, unsigned int newParti
 }
 
 
-void ParticleGenerator::Draw()
+void ParticleGenerator::Draw(Uint32 currentTime)
 {
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE); //additive blending
 	this->shader.use();
@@ -39,8 +39,22 @@ void ParticleGenerator::Draw()
 	{
 		if (particle.Life > 0.0f)
 		{
+			float dT = (currentTime - this->lastUpdate) / 1000.0f;
+			int framesToUpdate = floor(dT / (1.0f / animatedFPS));
+			if (framesToUpdate > 0) {
+				particle.Frame += framesToUpdate;
+				particle.Frame = (int)particle.Frame % (texture.Width / spriteWidth);
+				this->lastUpdate = currentTime;
+
+			}		
+
 			this->shader.setVector2f("offset", particle.Position);
 			this->shader.setVector4f("color", particle.Color);
+
+			this->shader.setFloat("frame", 0);
+			this->shader.setFloat("numRow", (float)(texture.Height / spriteHeight));
+			this->shader.setFloat("numCol", (float)(texture.Width / spriteWidth));
+
 			this->texture.bind();
 			glBindVertexArray(this->VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -107,6 +121,6 @@ void ParticleGenerator::respawnParticle(Particle& particle, glm::vec2 center, gl
 	particle.Position = center;
 	//particle.Position = center + random + offset;
 	particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
-	particle.Life = 5.0f;
-	particle.Velocity = glm::vec2(randx, randy);
+	particle.Life = 10.0f;
+	particle.Velocity = glm::vec2(0.0f, randy);
 }
