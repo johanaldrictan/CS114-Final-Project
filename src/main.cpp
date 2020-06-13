@@ -74,6 +74,12 @@ int main()
 	bool Running = true;
 	SDL_Event Event;
 
+	//for calculating mouse position and and light source position
+	static float xpos = 0.0f;
+	static float ypos = 0.0f;
+	float lightWidth = 500.0f;
+	float lightHeight = 75.0f;
+
 	while (Running)
 	{
 
@@ -85,22 +91,34 @@ int main()
 
 		float dT = (currentTime - lastUpdate) / 1000.0f;
 
+		glm::vec2 lightCenter = glm::vec2(xpos, ypos);
 		while (SDL_PollEvent(&Event) != 0)
 		{
-			if (Event.type == SDL_QUIT)
+			switch (Event.type)
 			{
+			case SDL_QUIT:
 				Running = false;
+				break;
+				//Calculate position of light source using mouse position
+			case SDL_MOUSEMOTION:
+				xpos = Event.motion.x - (lightWidth / 16.0f);
+				ypos = Event.motion.y - (lightHeight / 16.0f);
+				//std::cout << "X: " << xpos << " Y: " << ypos << "\n";
+				lightCenter = glm::vec2(xpos, ypos);
+				break;
 			}
-
 		}
-		Particles->Update(dT, glm::vec2(190.0f, 510.0f), 4);
+		//Particles->Update(dT, glm::vec2(190.0f, 510.0f), 4);
+		Particles->Update(dT, lightCenter + glm::vec2(45.0f,0.0f), 4);
+
 
 		lastUpdate = currentTime;
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		
-		Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f),currentTime, glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		//Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f),currentTime, glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+		Renderer->drawSprite(ResourceManager::getTexture("fire"), lightCenter, currentTime, glm::vec2(lightWidth, lightHeight), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 		Particles->Draw(currentTime);
 		SDL_GL_SwapWindow(window);
 	}
