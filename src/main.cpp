@@ -58,10 +58,13 @@ int main()
 	Renderer = new SpriteRenderer(ResourceManager::getShader("sprite"), 32, 32);
 	// load textures
 	ResourceManager::loadTexture("Fire.png", true, "fire");
-	ResourceManager::loadTexture("smoke.png", true, "particle");
+	//ResourceManager::loadTexture("smoke.png", true, "particle");
+	ResourceManager::loadTexture("smoke2.png", true, "particle");
 	//ResourceManager::loadTexture("container.png", true, "box");
 	//ResourceManager::loadTexture("awesomeface.png", true, "face");
-	Particles = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 100000, 256, 256);
+	//Particles = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 100000, 256, 256);
+	Particles = new ParticleGenerator(ResourceManager::getShader("particle"), ResourceManager::getTexture("particle"), 10000, 128, 128);
+
 	ResourceManager::getShader("particle").use().setMatrix4("projection", projection);
 
 	// deltaTime variables
@@ -90,12 +93,13 @@ int main()
 			}
 
 		}
-		Particles->Update(dT, glm::vec2(150.0f, 500.0f), 100);
+		Particles->Update(dT, glm::vec2(190.0f, 510.0f), 4);
 
 		lastUpdate = currentTime;
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		
 		Renderer->drawSprite(ResourceManager::getTexture("fire"), glm::vec2(150.0f, 500.0f),currentTime, glm::vec2(500.0f, 75.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 		Particles->Draw(currentTime);
 		SDL_GL_SwapWindow(window);

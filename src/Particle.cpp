@@ -25,7 +25,7 @@ void ParticleGenerator::Update(float dt, glm::vec2 center, unsigned int newParti
 		if (p.Life > 0.0f) {
 			p.Life -= dt;
 			p.Position -= p.Velocity * dt;
-			p.Color.a -= dt * 0.5f;
+			p.Color.a -= dt * 0.4f;
 		}
 	}
 }
@@ -33,32 +33,51 @@ void ParticleGenerator::Update(float dt, glm::vec2 center, unsigned int newParti
 
 void ParticleGenerator::Draw(Uint32 currentTime)
 {
+	float dT = (currentTime - this->lastUpdate) / 1000.0f;
+	int framesToUpdate = floor(dT / (1.0f / animatedFPS));
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE); //additive blending
 	this->shader.use();
-	for (Particle particle : this->particles)
+	for (unsigned int i = 0; i < this->amount; i++)
 	{
+		Particle& particle = this->particles[i];
 		if (particle.Life > 0.0f)
 		{
-			float dT = (currentTime - this->lastUpdate) / 1000.0f;
-			int framesToUpdate = floor(dT / (1.0f / animatedFPS));
+			
 			if (framesToUpdate > 0) {
-				particle.Frame += framesToUpdate;
-				particle.Frame = (int)particle.Frame % (texture.Width / spriteWidth);
-				this->lastUpdate = currentTime;
+				//std::cout << "Rows: " << (float)(texture.Height / spriteHeight) << " Cols: " << (float)(texture.Width / spriteWidth) << std::endl;
+				if (particle.FrameW == ((texture.Width / spriteWidth)-1)) {
+					particle.FrameH += framesToUpdate;
+					particle.FrameH =(int)particle.FrameH % (texture.Height / spriteHeight);
+				}
+				particle.FrameW += framesToUpdate;
+				particle.FrameW = (int)particle.FrameW % (texture.Width / spriteWidth);
+			}	
 
-			}		
+			/*if (particle.FrameW == texture.Width / spriteWidth - 1) {
+				particle.FrameW = 0.0;
+			}
+			particle.FrameW = particle.FrameW+1.0;*/
 
 			this->shader.setVector2f("offset", particle.Position);
+			this->shader.setFloat("frameW", particle.FrameW);
+			this->shader.setFloat("frameH", particle.FrameH);
+			this->shader.setFloat("numCol", (float)(texture.Width / spriteWidth));
+			this->shader.setFloat("numRow", (float)(texture.Height / spriteHeight));
+
+
 			this->shader.setVector4f("color", particle.Color);
 
-			this->shader.setFloat("frame", 0);
-			this->shader.setFloat("numRow", (float)(texture.Height / spriteHeight));
-			this->shader.setFloat("numCol", (float)(texture.Width / spriteWidth));
+			
+			//this->shader.setFloat("numCol", (float)(texture.Width / spriteWidth));
+
 
 			this->texture.bind();
 			glBindVertexArray(this->VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glBindVertexArray(0);
+		}
+		if (framesToUpdate > 0) {
+			this->lastUpdate = currentTime;
 		}
 	}
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -115,12 +134,14 @@ unsigned int ParticleGenerator::firstUnusedParticle()
 
 void ParticleGenerator::respawnParticle(Particle& particle, glm::vec2 center, glm::vec2 offset)
 {
-	float randx = ((rand() % 100) + 10);
-	float randy = ((rand() % 100) + 10);
+	float randx = ((rand() % 40) + -40);
+	float randy = ((rand() % 80) + 30);
 	float rColor = 0.5f + ((rand() % 100) / 100.0f);
-	particle.Position = center;
-	//particle.Position = center + random + offset;
-	particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
-	particle.Life = 10.0f;
+	float randA = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	particle.Position = center + glm::vec2(randx, 0.0f);
+	particle.Color = glm::vec4(rColor, rColor, rColor, randA);
+	particle.Life = 2.0f;
 	particle.Velocity = glm::vec2(0.0f, randy);
+	particle.FrameH = 0.0f;
+	particle.FrameW = 0.0f;
 }

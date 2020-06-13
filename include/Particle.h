@@ -14,10 +14,11 @@ struct Particle {
 	glm::vec4 Color;
 	float Weight;
 	float Life;
-	float Frame;
+	float FrameW;
+	float FrameH;
 
 	Particle()
-		: Position(0.0f), Velocity(1.0f), Color(1.0f), Weight(0.0f), Life(0.0f), Frame(0.0f) {}
+		: Position(0.0f), Velocity(1.0f), Color(1.0f), Weight(0.0f), Life(0.0f), FrameW(0.0f), FrameH(0.0f) {}
 };
 
 class ParticleGenerator{
